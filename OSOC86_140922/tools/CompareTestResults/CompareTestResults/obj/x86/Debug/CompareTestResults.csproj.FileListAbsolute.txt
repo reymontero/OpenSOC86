@@ -1,0 +1,7 @@
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\bin\Debug\CompareTestResults.exe
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\bin\Debug\CompareTestResults.pdb
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\obj\x86\Debug\CompareTestResults.Form1.resources
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\obj\x86\Debug\CompareTestResults.Properties.Resources.resources
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\obj\x86\Debug\CompareTestResults.csproj.GenerateResource.Cache
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\obj\x86\Debug\CompareTestResults.exe
+C:\Users\Roy\Documents\OSOC86\tools\CompareTestResults\CompareTestResults\obj\x86\Debug\CompareTestResults.pdb
