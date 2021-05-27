@@ -1,0 +1,25 @@
+C:\Users\Roy\AppData\Local\Temporary Projects\VGASim\obj\x86\Debug\VGASim.Form1.resources
+C:\Users\Roy\AppData\Local\Temporary Projects\VGASim\obj\x86\Debug\VGASim.Properties.Resources.resources
+C:\Users\Roy\AppData\Local\Temporary Projects\VGASim\obj\x86\Debug\VGASim.csproj.GenerateResource.Cache
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.Form1.resources
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.Properties.Resources.resources
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.csproj.GenerateResource.Cache
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\bin\Debug\VGASim.exe
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\bin\Debug\VGASim.pdb
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.exe
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.pdb
+C:\Users\Roy\Documents\Visual Studio 2010\Projects\VGASim\VGASim\obj\x86\Debug\VGASim.csprojResolveAssemblyReference.cache
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.exe
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.pdb
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\bin\Debug\VGASim.exe
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\bin\Debug\VGASim.pdb
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.csprojResolveAssemblyReference.cache
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.Form1.resources
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.Properties.Resources.resources
+C:\Users\Roy\Documents\OSOC86_140525\tools\VGASim\VGASim\obj\x86\Debug\VGASim.csproj.GenerateResource.Cache
+C:\Users\Roy\Documents\OSOC86_clean\tools\VGASim\VGASim\obj\x86\Debug\VGASim.exe
+C:\Users\Roy\Documents\OSOC86_clean\tools\VGASim\VGASim\obj\x86\Debug\VGASim.pdb
+C:\Users\Roy\Documents\OSOC86_140714\tools\VGASim\VGASim\obj\x86\Debug\VGASim.exe
+C:\Users\Roy\Documents\OSOC86_140714\tools\VGASim\VGASim\obj\x86\Debug\VGASim.pdb
+C:\Users\Roy\Documents\OSOC86_140912\tools\VGASim\VGASim\obj\x86\Debug\VGASim.exe
+C:\Users\Roy\Documents\OSOC86_140912\tools\VGASim\VGASim\obj\x86\Debug\VGASim.pdb
