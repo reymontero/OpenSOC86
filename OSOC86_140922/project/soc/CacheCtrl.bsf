@@ -1,0 +1,330 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 16 16 272 512)
+	(text "CacheCtrl" (rect 5 0 45 12)(font "Arial" ))
+	(text "inst" (rect 8 480 20 492)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "iClk" (rect 0 0 14 12)(font "Arial" ))
+		(text "iClk" (rect 21 27 35 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 1))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "iRst" (rect 0 0 16 12)(font "Arial" ))
+		(text "iRst" (rect 21 43 37 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "iBus_Adr[19..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "iBus_Adr[19..0]" (rect 21 59 83 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "iBus_RW[1..0]" (rect 0 0 60 12)(font "Arial" ))
+		(text "iBus_RW[1..0]" (rect 21 75 81 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "iBus_Data[15..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "iBus_Data[15..0]" (rect 21 91 85 103)(font "Arial" ))
+		(line (pt 0 96)(pt 16 96)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "iBus_BW" (rect 0 0 38 12)(font "Arial" ))
+		(text "iBus_BW" (rect 21 107 59 119)(font "Arial" ))
+		(line (pt 0 112)(pt 16 112)(line_width 1))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "iBus_RWBurst[1..0]" (rect 0 0 81 12)(font "Arial" ))
+		(text "iBus_RWBurst[1..0]" (rect 21 123 102 135)(font "Arial" ))
+		(line (pt 0 128)(pt 16 128)(line_width 3))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "iCR_Data1[31..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "iCR_Data1[31..0]" (rect 21 139 89 151)(font "Arial" ))
+		(line (pt 0 144)(pt 16 144)(line_width 3))
+	)
+	(port
+		(pt 0 160)
+		(input)
+		(text "iCR_Data2[31..0]" (rect 0 0 69 12)(font "Arial" ))
+		(text "iCR_Data2[31..0]" (rect 21 155 90 167)(font "Arial" ))
+		(line (pt 0 160)(pt 16 160)(line_width 3))
+	)
+	(port
+		(pt 0 176)
+		(input)
+		(text "iFR_Data1[11..0]" (rect 0 0 66 12)(font "Arial" ))
+		(text "iFR_Data1[11..0]" (rect 21 171 87 183)(font "Arial" ))
+		(line (pt 0 176)(pt 16 176)(line_width 3))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "iFR_Data2[11..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "iFR_Data2[11..0]" (rect 21 187 88 199)(font "Arial" ))
+		(line (pt 0 192)(pt 16 192)(line_width 3))
+	)
+	(port
+		(pt 0 208)
+		(input)
+		(text "iSR_Data[31..0]" (rect 0 0 63 12)(font "Arial" ))
+		(text "iSR_Data[31..0]" (rect 21 203 84 215)(font "Arial" ))
+		(line (pt 0 208)(pt 16 208)(line_width 3))
+	)
+	(port
+		(pt 0 224)
+		(input)
+		(text "iSR_Ack" (rect 0 0 38 12)(font "Arial" ))
+		(text "iSR_Ack" (rect 21 219 59 231)(font "Arial" ))
+		(line (pt 0 224)(pt 16 224)(line_width 1))
+	)
+	(port
+		(pt 0 240)
+		(input)
+		(text "iDR_Data[31..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "iDR_Data[31..0]" (rect 21 235 85 247)(font "Arial" ))
+		(line (pt 0 240)(pt 16 240)(line_width 3))
+	)
+	(port
+		(pt 0 256)
+		(input)
+		(text "iDR_Ack" (rect 0 0 40 12)(font "Arial" ))
+		(text "iDR_Ack" (rect 21 251 61 263)(font "Arial" ))
+		(line (pt 0 256)(pt 16 256)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(input)
+		(text "iDR_Busy" (rect 0 0 43 12)(font "Arial" ))
+		(text "iDR_Busy" (rect 21 267 64 279)(font "Arial" ))
+		(line (pt 0 272)(pt 16 272)(line_width 1))
+	)
+	(port
+		(pt 256 32)
+		(output)
+		(text "oBus_Data[31..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "oBus_Data[31..0]" (rect 167 27 235 39)(font "Arial" ))
+		(line (pt 256 32)(pt 240 32)(line_width 3))
+	)
+	(port
+		(pt 256 48)
+		(output)
+		(text "oBus_Ack" (rect 0 0 43 12)(font "Arial" ))
+		(text "oBus_Ack" (rect 192 43 235 55)(font "Arial" ))
+		(line (pt 256 48)(pt 240 48)(line_width 1))
+	)
+	(port
+		(pt 256 64)
+		(output)
+		(text "oBus_BData[31..0]" (rect 0 0 74 12)(font "Arial" ))
+		(text "oBus_BData[31..0]" (rect 161 59 235 71)(font "Arial" ))
+		(line (pt 256 64)(pt 240 64)(line_width 3))
+	)
+	(port
+		(pt 256 80)
+		(output)
+		(text "oBus_BAck" (rect 0 0 49 12)(font "Arial" ))
+		(text "oBus_BAck" (rect 186 75 235 87)(font "Arial" ))
+		(line (pt 256 80)(pt 240 80)(line_width 1))
+	)
+	(port
+		(pt 256 96)
+		(output)
+		(text "oCR_Adr1[7..0]" (rect 0 0 66 12)(font "Arial" ))
+		(text "oCR_Adr1[7..0]" (rect 169 91 235 103)(font "Arial" ))
+		(line (pt 256 96)(pt 240 96)(line_width 3))
+	)
+	(port
+		(pt 256 112)
+		(output)
+		(text "oCR_Adr2[7..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "oCR_Adr2[7..0]" (rect 168 107 235 119)(font "Arial" ))
+		(line (pt 256 112)(pt 240 112)(line_width 3))
+	)
+	(port
+		(pt 256 128)
+		(output)
+		(text "oCR_BE1[3..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "oCR_BE1[3..0]" (rect 173 123 235 135)(font "Arial" ))
+		(line (pt 256 128)(pt 240 128)(line_width 3))
+	)
+	(port
+		(pt 256 144)
+		(output)
+		(text "oCR_Data1[31..0]" (rect 0 0 71 12)(font "Arial" ))
+		(text "oCR_Data1[31..0]" (rect 164 139 235 151)(font "Arial" ))
+		(line (pt 256 144)(pt 240 144)(line_width 3))
+	)
+	(port
+		(pt 256 160)
+		(output)
+		(text "oCR_Data2[31..0]" (rect 0 0 73 12)(font "Arial" ))
+		(text "oCR_Data2[31..0]" (rect 162 155 235 167)(font "Arial" ))
+		(line (pt 256 160)(pt 240 160)(line_width 3))
+	)
+	(port
+		(pt 256 176)
+		(output)
+		(text "oCR_Wr1" (rect 0 0 43 12)(font "Arial" ))
+		(text "oCR_Wr1" (rect 192 171 235 183)(font "Arial" ))
+		(line (pt 256 176)(pt 240 176)(line_width 1))
+	)
+	(port
+		(pt 256 192)
+		(output)
+		(text "oCR_Wr2" (rect 0 0 44 12)(font "Arial" ))
+		(text "oCR_Wr2" (rect 191 187 235 199)(font "Arial" ))
+		(line (pt 256 192)(pt 240 192)(line_width 1))
+	)
+	(port
+		(pt 256 208)
+		(output)
+		(text "oFR_Adr1[4..0]" (rect 0 0 66 12)(font "Arial" ))
+		(text "oFR_Adr1[4..0]" (rect 169 203 235 215)(font "Arial" ))
+		(line (pt 256 208)(pt 240 208)(line_width 3))
+	)
+	(port
+		(pt 256 224)
+		(output)
+		(text "oFR_Adr2[4..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "oFR_Adr2[4..0]" (rect 168 219 235 231)(font "Arial" ))
+		(line (pt 256 224)(pt 240 224)(line_width 3))
+	)
+	(port
+		(pt 256 240)
+		(output)
+		(text "oFR_Data1[11..0]" (rect 0 0 69 12)(font "Arial" ))
+		(text "oFR_Data1[11..0]" (rect 166 235 235 247)(font "Arial" ))
+		(line (pt 256 240)(pt 240 240)(line_width 3))
+	)
+	(port
+		(pt 256 256)
+		(output)
+		(text "oFR_Data2[11..0]" (rect 0 0 70 12)(font "Arial" ))
+		(text "oFR_Data2[11..0]" (rect 165 251 235 263)(font "Arial" ))
+		(line (pt 256 256)(pt 240 256)(line_width 3))
+	)
+	(port
+		(pt 256 272)
+		(output)
+		(text "oFR_Wr1" (rect 0 0 42 12)(font "Arial" ))
+		(text "oFR_Wr1" (rect 193 267 235 279)(font "Arial" ))
+		(line (pt 256 272)(pt 240 272)(line_width 1))
+	)
+	(port
+		(pt 256 288)
+		(output)
+		(text "oFR_Wr2" (rect 0 0 43 12)(font "Arial" ))
+		(text "oFR_Wr2" (rect 192 283 235 295)(font "Arial" ))
+		(line (pt 256 288)(pt 240 288)(line_width 1))
+	)
+	(port
+		(pt 256 304)
+		(output)
+		(text "oSR_Adr[18..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "oSR_Adr[18..0]" (rect 171 299 235 311)(font "Arial" ))
+		(line (pt 256 304)(pt 240 304)(line_width 3))
+	)
+	(port
+		(pt 256 320)
+		(output)
+		(text "oSR_RW[1..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "oSR_RW[1..0]" (rect 173 315 235 327)(font "Arial" ))
+		(line (pt 256 320)(pt 240 320)(line_width 3))
+	)
+	(port
+		(pt 256 336)
+		(output)
+		(text "oSR_Data[31..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "oSR_Data[31..0]" (rect 168 331 235 343)(font "Arial" ))
+		(line (pt 256 336)(pt 240 336)(line_width 3))
+	)
+	(port
+		(pt 256 352)
+		(output)
+		(text "oSR_BE[3..0]" (rect 0 0 57 12)(font "Arial" ))
+		(text "oSR_BE[3..0]" (rect 178 347 235 359)(font "Arial" ))
+		(line (pt 256 352)(pt 240 352)(line_width 3))
+	)
+	(port
+		(pt 256 368)
+		(output)
+		(text "oDR_Stb" (rect 0 0 38 12)(font "Arial" ))
+		(text "oDR_Stb" (rect 197 363 235 375)(font "Arial" ))
+		(line (pt 256 368)(pt 240 368)(line_width 1))
+	)
+	(port
+		(pt 256 384)
+		(output)
+		(text "oDR_Wr" (rect 0 0 40 12)(font "Arial" ))
+		(text "oDR_Wr" (rect 195 379 235 391)(font "Arial" ))
+		(line (pt 256 384)(pt 240 384)(line_width 1))
+	)
+	(port
+		(pt 256 400)
+		(output)
+		(text "oDR_Adr[23..0]" (rect 0 0 67 12)(font "Arial" ))
+		(text "oDR_Adr[23..0]" (rect 168 395 235 407)(font "Arial" ))
+		(line (pt 256 400)(pt 240 400)(line_width 3))
+	)
+	(port
+		(pt 256 416)
+		(output)
+		(text "oDR_Data[31..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "oDR_Data[31..0]" (rect 167 411 235 423)(font "Arial" ))
+		(line (pt 256 416)(pt 240 416)(line_width 3))
+	)
+	(port
+		(pt 256 432)
+		(output)
+		(text "oDR_Mask[3..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "oDR_Mask[3..0]" (rect 167 427 235 439)(font "Arial" ))
+		(line (pt 256 432)(pt 240 432)(line_width 3))
+	)
+	(port
+		(pt 256 448)
+		(output)
+		(text "oDR_Load[1..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "oDR_Load[1..0]" (rect 171 443 235 455)(font "Arial" ))
+		(line (pt 256 448)(pt 240 448)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 240 480)(line_width 1))
+	)
+)

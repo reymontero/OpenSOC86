@@ -1,0 +1,211 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 16 16 312 384)
+	(text "OSOC86_soc" (rect 5 0 61 12)(font "Arial" ))
+	(text "inst" (rect 8 352 20 364)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "iClk" (rect 0 0 14 12)(font "Arial" ))
+		(text "iClk" (rect 21 27 35 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 1))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "iRamAck" (rect 0 0 40 12)(font "Arial" ))
+		(text "iRamAck" (rect 21 43 61 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "iRst" (rect 0 0 16 12)(font "Arial" ))
+		(text "iRst" (rect 21 59 37 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "iVGA_RAMAck" (rect 0 0 73 12)(font "Arial" ))
+		(text "iVGA_RAMAck" (rect 21 75 94 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 1))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "iRamData[31..0]" (rect 0 0 64 12)(font "Arial" ))
+		(text "iRamData[31..0]" (rect 21 91 85 103)(font "Arial" ))
+		(line (pt 0 96)(pt 16 96)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "iVGA_RAMData[31..0]" (rect 0 0 97 12)(font "Arial" ))
+		(text "iVGA_RAMData[31..0]" (rect 21 107 118 119)(font "Arial" ))
+		(line (pt 0 112)(pt 16 112)(line_width 3))
+	)
+	(port
+		(pt 296 32)
+		(output)
+		(text "oRamBW" (rect 0 0 42 12)(font "Arial" ))
+		(text "oRamBW" (rect 233 27 275 39)(font "Arial" ))
+		(line (pt 296 32)(pt 280 32)(line_width 1))
+	)
+	(port
+		(pt 296 48)
+		(output)
+		(text "oHalted" (rect 0 0 29 12)(font "Arial" ))
+		(text "oHalted" (rect 246 43 275 55)(font "Arial" ))
+		(line (pt 296 48)(pt 280 48)(line_width 1))
+	)
+	(port
+		(pt 296 64)
+		(output)
+		(text "clk100" (rect 0 0 23 12)(font "Arial" ))
+		(text "clk100" (rect 252 59 275 71)(font "Arial" ))
+		(line (pt 296 64)(pt 280 64)(line_width 1))
+	)
+	(port
+		(pt 296 80)
+		(output)
+		(text "oVGA_RAMRd" (rect 0 0 71 12)(font "Arial" ))
+		(text "oVGA_RAMRd" (rect 204 75 275 87)(font "Arial" ))
+		(line (pt 296 80)(pt 280 80)(line_width 1))
+	)
+	(port
+		(pt 296 96)
+		(output)
+		(text "oVGA_HS" (rect 0 0 47 12)(font "Arial" ))
+		(text "oVGA_HS" (rect 228 91 275 103)(font "Arial" ))
+		(line (pt 296 96)(pt 280 96)(line_width 1))
+	)
+	(port
+		(pt 296 112)
+		(output)
+		(text "oVGA_VS" (rect 0 0 48 12)(font "Arial" ))
+		(text "oVGA_VS" (rect 227 107 275 119)(font "Arial" ))
+		(line (pt 296 112)(pt 280 112)(line_width 1))
+	)
+	(port
+		(pt 296 128)
+		(output)
+		(text "oVGA_SYNC_N" (rect 0 0 74 12)(font "Arial" ))
+		(text "oVGA_SYNC_N" (rect 201 123 275 135)(font "Arial" ))
+		(line (pt 296 128)(pt 280 128)(line_width 1))
+	)
+	(port
+		(pt 296 144)
+		(output)
+		(text "oVGA_BLANK_N" (rect 0 0 81 12)(font "Arial" ))
+		(text "oVGA_BLANK_N" (rect 194 139 275 151)(font "Arial" ))
+		(line (pt 296 144)(pt 280 144)(line_width 1))
+	)
+	(port
+		(pt 296 160)
+		(output)
+		(text "oVGA_CLOCK" (rect 0 0 68 12)(font "Arial" ))
+		(text "oVGA_CLOCK" (rect 207 155 275 167)(font "Arial" ))
+		(line (pt 296 160)(pt 280 160)(line_width 1))
+	)
+	(port
+		(pt 296 176)
+		(output)
+		(text "cur_Inst[63..0]" (rect 0 0 57 12)(font "Arial" ))
+		(text "cur_Inst[63..0]" (rect 218 171 275 183)(font "Arial" ))
+		(line (pt 296 176)(pt 280 176)(line_width 3))
+	)
+	(port
+		(pt 296 192)
+		(output)
+		(text "DUMP[207..0]" (rect 0 0 57 12)(font "Arial" ))
+		(text "DUMP[207..0]" (rect 218 187 275 199)(font "Arial" ))
+		(line (pt 296 192)(pt 280 192)(line_width 3))
+	)
+	(port
+		(pt 296 208)
+		(output)
+		(text "oRamAdr[19..0]" (rect 0 0 66 12)(font "Arial" ))
+		(text "oRamAdr[19..0]" (rect 209 203 275 215)(font "Arial" ))
+		(line (pt 296 208)(pt 280 208)(line_width 3))
+	)
+	(port
+		(pt 296 224)
+		(output)
+		(text "oRamBurst[1..0]" (rect 0 0 66 12)(font "Arial" ))
+		(text "oRamBurst[1..0]" (rect 209 219 275 231)(font "Arial" ))
+		(line (pt 296 224)(pt 280 224)(line_width 3))
+	)
+	(port
+		(pt 296 240)
+		(output)
+		(text "oRamData[15..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "oRamData[15..0]" (rect 207 235 275 247)(font "Arial" ))
+		(line (pt 296 240)(pt 280 240)(line_width 3))
+	)
+	(port
+		(pt 296 256)
+		(output)
+		(text "oRamRW[1..0]" (rect 0 0 63 12)(font "Arial" ))
+		(text "oRamRW[1..0]" (rect 212 251 275 263)(font "Arial" ))
+		(line (pt 296 256)(pt 280 256)(line_width 3))
+	)
+	(port
+		(pt 296 272)
+		(output)
+		(text "oTmpOut[15..0]" (rect 0 0 61 12)(font "Arial" ))
+		(text "oTmpOut[15..0]" (rect 214 267 275 279)(font "Arial" ))
+		(line (pt 296 272)(pt 280 272)(line_width 3))
+	)
+	(port
+		(pt 296 288)
+		(output)
+		(text "oVGA_B[9..0]" (rect 0 0 60 12)(font "Arial" ))
+		(text "oVGA_B[9..0]" (rect 215 283 275 295)(font "Arial" ))
+		(line (pt 296 288)(pt 280 288)(line_width 3))
+	)
+	(port
+		(pt 296 304)
+		(output)
+		(text "oVGA_G[9..0]" (rect 0 0 61 12)(font "Arial" ))
+		(text "oVGA_G[9..0]" (rect 214 299 275 311)(font "Arial" ))
+		(line (pt 296 304)(pt 280 304)(line_width 3))
+	)
+	(port
+		(pt 296 320)
+		(output)
+		(text "oVGA_R[9..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "oVGA_R[9..0]" (rect 213 315 275 327)(font "Arial" ))
+		(line (pt 296 320)(pt 280 320)(line_width 3))
+	)
+	(port
+		(pt 296 336)
+		(output)
+		(text "oVGA_RAMAdr[18..0]" (rect 0 0 99 12)(font "Arial" ))
+		(text "oVGA_RAMAdr[18..0]" (rect 176 331 275 343)(font "Arial" ))
+		(line (pt 296 336)(pt 280 336)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 280 352)(line_width 1))
+	)
+)
