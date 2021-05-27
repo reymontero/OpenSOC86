@@ -1,0 +1,573 @@
+#
+#    This file is part of the OpenSOC86 project
+#    Copyright (c) 2013-2014 Roy van Koten
+#
+#    This 'system on chip' (SOC) is free hardware: you can redistribute it
+#    and/or modify it under the terms of the GNU General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This SOC is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+DEF	0	---, DF0, DF1, REP, CON, CXNZ, CXNZ_Z, CXNZ_NZ, CXZ, OF, PREP, REPF, PREFIX, HALT, ERR, STR
+
+DEF	1	al/ax/es, cl/cx/cs, dl/dx/ss, bl/bx/ds, ah/sp, ch/bp, dh/si, bh/di, op1, op2, op3, ---, ops, ip, half, flags, seg, tmp
+DEF	2	al/ax/es, cl/cx/cs, dl/dx/ss, bl/bx/ds, ah/sp, ch/bp, dh/si, bh/di, op1, op2, op3, ---, ops, ip, half, flags, seg, tmp
+DEF	3	byte/---, word, seg, oth, b1w2
+
+DEF	4	---, LDM
+DEF	5	data, esdi, imm, stack, int, xlat, dssi, ---
+DEF	6	byte, word, lwrd, hwrd, ---
+
+DEF	7	rg1/---, mem, sim, two, cbw
+DEF	8	rg2/---, mem, imm, two, cwd
+
+DEF	9	ALU, INP, OUT, ADJ, MUL, DIV, SHF, CWD/---
+
+DEF	10	add, or, adc, ssb, and, sub, xor, cmp, inc, dec, not, neg, test, mov1, mov2, sl2, opa, op1, ---
+DEF	10	daa, das, aaa, aas, aam, ---, aad, ---
+DEF	10	mul, muh
+DEF	10	div, rem, aam
+DEF	10	cbw, cwd
+
+DEF	11	byte/---, word
+DEF	11	ubyte, uword, sbyte, sword
+#DEF	11	ubyte, uword, sbyte, sword, lbyte, lword, lsbyte, lsword
+DEF	11	byteone, wordone, bytecnt, wordcnt
+
+#DEF	12	alu, mem, mul, muh, div, dih, EA, adj, inp, ---, shf
+DEF	12	alu, adj, shf, mul, div, inp, EA, cwd, mem, muh, dih, ---
+DEF	13	byte, word, ---
+DEF	14	add, or, adc, ssb, and, sub, xor, cmp, inc, dec, not, neg, test, mov1, mov2, ---, opa, op1, mul, div, adj, shf, cmpc, clrc, clri, clrd, setc, seti, setd, half, flags
+
+DEF	15	---, REG, MEM
+
+DEF	16	al/ax/es, cl/cx/cs, dl/dx/ss, bl/bx/ds, ah/sp, ch/bp, dh/si, bh/di, op1, op2, op3, ---, ops, ip, half, flags, seg, tmp
+DEF	16	data, esdi, imm, stack, int, xlat, dssi, ---
+
+DEF	17	byte/---, word, seg, oth
+DEF	17	byte/---, word, lwrd, hwrd
+
+#					CON	LDR1	LDR2	LDRBW	LDM	LDMT	LDMBW	SEL1	SEL2	EXEC	FUNC	XBW	SELO	FBW	FSEL	STRM	DST	STBW
+
+#mov
+#Register/Memory to/from Register
+1000100011xxx	[mov]	[11]	{P}	---	op1	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op2	byte	
+10001000mmxxx	[mov]	[mm]	{}	---	op1	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	data	byte	
+1000100111xxx	[mov]	[11]	{P}	---	op1	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op2	word	
+10001001mmxxx	[mov]	[mm]	{}	---	op1	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	data	word	
+1000101011xxx	[mov]	[11]	{P}	---	---	op2	byte	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	op1	byte	
+10001010mmxxx	[mov]	[mm]	{}	---	---	---	byte	LDM	data	byte	---	mem	ALU	mov2	---	alu	---	---	REG	op1	byte	
+1000101111xxx	[mov]	[11]	{P}	---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	op1	word	
+10001011mmxxx	[mov]	[mm]	{}	---	---	---	word	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	op1	word
+#Immediate to Register/Memory
+1100011011000	[mov]	[11]	{P}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	op2	byte	
+11000110mm000	[mov]	[mm]	{}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	MEM	data	byte	
+1100011111000	[mov]	[11]	{P}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	op2	word	
+11000111mm000	[mov]	[mm]	{}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	MEM	data	word	
+#Immediate to Register
+10110xxxxxxxx	[mov]	[--]	{P}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	op3	byte	
+10111xxxxxxxx	[mov]	[--]	{P}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	op3	word	
+#Memory to Accumulator
+10100000xxxxx	[mov]	[--]	{}	---	---	---	---	LDM	imm	byte	---	mem	ALU	mov2	---	alu	---	---	REG	al	byte	
+10100001xxxxx	[mov]	[--]	{}	---	---	---	---	LDM	imm	word	---	mem	ALU	mov2	---	alu	---	---	REG	ax	word	
+#Accumulator to Memory
+10100010xxxxx	[mov]	[--]	{}	---	al	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	imm	byte	
+10100011xxxxx	[mov]	[--]	{}	---	ax	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	imm	word	
+#Register/Memory to Segment Register
+10001110110xx	[mov]	[11]	{P}	---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	ops	seg	
+10001110mm0xx	[mov]	[mm]	{}	---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	ops	seg	
+#Segment Register to Register/Memory
+10001100110xx	[mov]	[11]	{P}	---	ops	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op2	word	
+10001100mm0xx	[mov]	[mm]	{}	---	ops	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	data	word	
+
+#push
+#Register/Memory
+1111111111110	[push]	[11]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	op1	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word	
+11111111mm110	[push]	[mm]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	MEM	stack	word	
+#Register
+01010xxxxxxxx	[push]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	op3	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word	
+#Segment Register
+000xx110xxxxx	[pshsg]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	seg	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word	
+#pop
+#Register/Memory
+1000111111000	[pop]	[11]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	op2	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word	
+10001111mm000	[pop]	[mm]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	MEM	data	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word	
+#Register
+01011xxxxxxxx	[pop]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	op3	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word	
+#Segment Register
+000xx111xxxxx	[popsg]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	seg	seg
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word	
+#xchg
+#Register/Memory with Register
+1000011011xxx	[xchg]	[11]	{N}	---	op1	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	tmp	oth
+					---	---	op2	byte	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	op1	byte
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op2	byte
+
+10000110mmxxx	[xchg]	[mm]	{N}	---	op1	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	byte	---	mem	ALU	mov2	---	alu	---	---	REG	op1	byte
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	data	byte
+
+1000011111xxx	[xchg]	[11]	{N}	---	op1	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	tmp	oth
+					---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	op1	word
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op2	word
+
+10000111mmxxx	[xchg]	[mm]	{N}	---	op1	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	op1	word
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	data	word
+
+#Register with Accumulator
+10010xxxxxxxx	[xchg]	[--]	{N}	---	op3	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	tmp	oth
+					---	---	ax	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	op3	word
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	ax	word	
+#in
+#Fixed Port
+11100100xxxxx	[in]	[--]	{}	---	---	---	---	---	---	---	---	imm	INP	---	byte	inp	---	---	REG	al	byte	
+11100101xxxxx	[in]	[--]	{}	---	---	---	---	---	---	---	---	imm	INP	---	word	inp	---	---	REG	ax	word	
+#Variable Port
+11101100xxxxx	[in]	[--]	{}	---	---	dx	word	---	---	---	---	rg2	INP	---	byte	inp	---	---	REG	al	byte	
+11101101xxxxx	[in]	[--]	{}	---	---	dx	word	---	---	---	---	rg2	INP	---	word	inp	---	---	REG	ax	word	
+
+#out
+#Fixed Port
+11100110xxxxx	[out]	[--]	{}	---	ax	---	word	---	---	---	rg1	imm	OUT	---	byte	---	---	---	---	---	---	
+11100111xxxxx	[out]	[--]	{}	---	ax	---	word	---	---	---	rg1	imm	OUT	---	word	---	---	---	---	---	---	
+#Variable Port
+11101110xxxxx	[out]	[--]	{}	---	ax	dx	word	---	---	---	rg1	rg2	OUT	---	byte	---	---	---	---	---	---	
+11101111xxxxx	[out]	[--]	{}	---	ax	dx	word	---	---	---	rg1	rg2	OUT	---	word	---	---	---	---	---	---	
+
+#XLAT e Translate Byte to AL
+11010111xxxxx	[xlat]	[--]	{N}	---	al	bx	b1w2	---	---	---	rg1	rg2	ALU	add	---	alu	---	---	---	---	---
+					---	---	---	---	LDM	xlat	byte	---	mem	ALU	mov2	---	alu	---	---	REG	al	byte	
+#LEA e Load EA to Register
+1000110111xxx	[lea]	[11]	{P}	---	---	---	---	---	---	---	---	---	---	---	---	EA	---	---	REG	op1	word	
+10001101mmxxx	[lea]	[mm]	{}	---	---	---	---	---	---	---	---	---	---	---	---	EA	---	---	REG	op1	word	
+
+#LDS e Load Pointer to DS
+1100010111xxx	[lds]	[11]	{N}	---	---	---	---	LDM	data	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	ds	seg
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op1	word	
+11000101mmxxx	[lds]	[mm]	{N}	---	---	---	---	LDM	data	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	ds	seg
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op1	word	
+#LES e Load Pointer to ES
+1100010011xxx	[les]	[11]	{N}	---	---	---	---	LDM	data	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	es	seg
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op1	word	
+11000100mmxxx	[les]	[mm]	{N}	---	---	---	---	LDM	data	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	es	seg
+					---	tmp	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	op1	word
+#LAHF e Load AH with Flags
+10011111xxxxx	[lahf]	[--]	{}	---	flags	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	REG	ah	byte
+
+#SAHF e Store AH into Flags
+10011110xxxxx	[sahf]	[--]	{}	---	ah	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	half	---	---	---
+
+#PUSHF - Push Flags
+10011100xxxxx	[pushf]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	flags	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word	
+#POPF - Pop Flags
+10011101xxxxx	[popf]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	flags	---	---	---
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word	
+
+#add, or, adc, ssb
+#Reg./Memory with Register to Either
+000xx00011xxx	[alu]	[11]	{P}	---	op2	op1	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op2	byte	
+000xx000mmxxx	[alu]	[mm]	{}	---	---	op1	byte	LDM	data	byte	mem	rg2	ALU	opa	---	alu	byte	opa	MEM	data	byte	
+000xx00111xxx	[alu]	[11]	{P}	---	op2	op1	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op2	word	
+000xx001mmxxx	[alu]	[mm]	{}	---	---	op1	word	LDM	data	word	mem	rg2	ALU	opa	---	alu	word	opa	MEM	data	word	
+000xx01011xxx	[alu]	[11]	{P}	---	op1	op2	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+000xx010mmxxx	[alu]	[mm]	{}	---	op1	---	byte	LDM	data	byte	rg1	mem	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+000xx01111xxx	[alu]	[11]	{P}	---	op1	op2	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op1	word	
+000xx011mmxxx	[alu]	[mm]	{}	---	op1	---	word	LDM	data	word	rg1	mem	ALU	opa	---	alu	word	opa	REG	op1	word	
+#Immediate to Register/Memory
+100000x0110xx	[alu]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	imm	ALU	op1	---	alu	byte	op1	REG	op2	byte	
+100000x0mm0xx	[alu]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	imm	ALU	op1	---	alu	byte	op1	MEM	data	byte	
+100000x1110xx	[alu]	[11]	{P}	---	op2	---	word	---	---	---	rg1	imm	ALU	op1	---	alu	word	op1	REG	op2	word	
+100000x1mm0xx	[alu]	[mm]	{}	---	---	---	---	LDM	data	word	mem	imm	ALU	op1	---	alu	word	op1	MEM	data	word	
+#Immediate to Accumulator
+000xx100xxxxx	[alu]	[--]	{P}	---	al	---	byte	---	---	---	rg1	imm	ALU	opa	---	alu	byte	opa	REG	al	byte	
+000xx101xxxxx	[alu]	[--]	{P}	---	ax	---	word	---	---	---	rg1	imm	ALU	opa	---	alu	word	opa	REG	ax	word	
+
+#and, sub
+#Reg./Memory with Register to Either
+0010x00011xxx	[alu]	[11]	{P}	---	op2	op1	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op2	byte	
+0010x000mmxxx	[alu]	[mm]	{}	---	---	op1	byte	LDM	data	byte	mem	rg2	ALU	opa	---	alu	byte	opa	MEM	data	byte	
+0010x00111xxx	[alu]	[11]	{P}	---	op2	op1	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op2	word	
+0010x001mmxxx	[alu]	[mm]	{}	---	---	op1	word	LDM	data	word	mem	rg2	ALU	opa	---	alu	word	opa	MEM	data	word	
+0010x01011xxx	[alu]	[11]	{P}	---	op1	op2	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+0010x010mmxxx	[alu]	[mm]	{}	---	op1	---	byte	LDM	data	byte	rg1	mem	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+0010x01111xxx	[alu]	[11]	{P}	---	op1	op2	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op1	word	
+0010x011mmxxx	[alu]	[mm]	{}	---	op1	---	word	LDM	data	word	rg1	mem	ALU	opa	---	alu	word	opa	REG	op1	word	
+#Immediate to Register/Memory
+100000x01110x	[alu]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	imm	ALU	op1	---	alu	byte	op1	REG	op2	byte	
+100000x0mm10x	[alu]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	imm	ALU	op1	---	alu	byte	op1	MEM	data	byte	
+100000x11110x	[alu]	[11]	{P}	---	op2	---	word	---	---	---	rg1	imm	ALU	op1	---	alu	word	op1	REG	op2	word	
+100000x1mm10x	[alu]	[mm]	{}	---	---	---	---	LDM	data	word	mem	imm	ALU	op1	---	alu	word	op1	MEM	data	word	
+#Immediate to Accumulator
+0010x100xxxxx	[alu]	[--]	{P}	---	al	---	byte	---	---	---	rg1	imm	ALU	opa	---	alu	byte	opa	REG	al	byte	
+0010x101xxxxx	[alu]	[--]	{P}	---	ax	---	word	---	---	---	rg1	imm	ALU	opa	---	alu	word	opa	REG	ax	word	
+
+#xor
+#Reg./Memory with Register to Either
+0011000011xxx	[alu]	[11]	{P}	---	op2	op1	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op2	byte	
+00110000mmxxx	[alu]	[mm]	{}	---	---	op1	byte	LDM	data	byte	mem	rg2	ALU	opa	---	alu	byte	opa	MEM	data	byte	
+0011000111xxx	[alu]	[11]	{P}	---	op2	op1	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op2	word	
+00110001mmxxx	[alu]	[mm]	{}	---	---	op1	word	LDM	data	word	mem	rg2	ALU	opa	---	alu	word	opa	MEM	data	word	
+0011001011xxx	[alu]	[11]	{P}	---	op1	op2	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+00110010mmxxx	[alu]	[mm]	{}	---	op1	---	byte	LDM	data	byte	rg1	mem	ALU	opa	---	alu	byte	opa	REG	op1	byte	
+0011001111xxx	[alu]	[11]	{P}	---	op1	op2	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	REG	op1	word	
+00110011mmxxx	[alu]	[mm]	{}	---	op1	---	word	LDM	data	word	rg1	mem	ALU	opa	---	alu	word	opa	REG	op1	word	
+#Immediate to Register/Memory
+100000x011110	[alu]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	imm	ALU	op1	---	alu	byte	op1	REG	op2	byte	
+100000x0mm110	[alu]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	imm	ALU	op1	---	alu	byte	op1	MEM	data	byte	
+100000x111110	[alu]	[11]	{P}	---	op2	---	word	---	---	---	rg1	imm	ALU	op1	---	alu	word	op1	REG	op2	word	
+100000x1mm110	[alu]	[mm]	{}	---	---	---	---	LDM	data	word	mem	imm	ALU	op1	---	alu	word	op1	MEM	data	word	
+#Immediate to Accumulator
+00110100xxxxx	[alu]	[--]	{P}	---	al	---	byte	---	---	---	rg1	imm	ALU	opa	---	alu	byte	opa	REG	al	byte	
+00110101xxxxx	[alu]	[--]	{P}	---	ax	---	word	---	---	---	rg1	imm	ALU	opa	---	alu	word	opa	REG	ax	word	
+
+#cmp
+#Reg./Memory with Register to Either
+0011100011xxx	[alu]	[11]	{P}	---	op2	op1	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	---	---	---	
+00111000mmxxx	[alu]	[mm]	{}	---	---	op1	byte	LDM	data	byte	mem	rg2	ALU	opa	---	alu	byte	opa	---	---	---	
+0011100111xxx	[alu]	[11]	{P}	---	op2	op1	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	---	---	---	
+00111001mmxxx	[alu]	[mm]	{}	---	---	op1	word	LDM	data	word	mem	rg2	ALU	opa	---	alu	word	opa	---	---	---	
+0011101011xxx	[alu]	[11]	{P}	---	op1	op2	byte	---	---	---	rg1	rg2	ALU	opa	---	alu	byte	opa	---	---	---	
+00111010mmxxx	[alu]	[mm]	{}	---	op1	---	byte	LDM	data	byte	rg1	mem	ALU	opa	---	alu	byte	opa	---	---	---	
+0011101111xxx	[alu]	[11]	{P}	---	op1	op2	word	---	---	---	rg1	rg2	ALU	opa	---	alu	word	opa	---	---	---	
+00111011mmxxx	[alu]	[mm]	{}	---	op1	---	word	LDM	data	word	rg1	mem	ALU	opa	---	alu	word	opa	---	---	---	
+#Immediate to Register/Memory
+100000x011111	[alu]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	imm	ALU	op1	---	alu	byte	op1	---	---	---	
+100000x0mm111	[alu]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	imm	ALU	op1	---	alu	byte	op1	---	---	---	
+100000x111111	[alu]	[11]	{P}	---	op2	---	word	---	---	---	rg1	imm	ALU	op1	---	alu	word	op1	---	---	---	
+100000x1mm111	[alu]	[mm]	{}	---	---	---	---	LDM	data	word	mem	imm	ALU	op1	---	alu	word	op1	---	---	---	
+#Immediate to Accumulator
+00111100xxxxx	[alu]	[--]	{P}	---	al	---	byte	---	---	---	rg1	imm	ALU	opa	---	alu	byte	opa	---	---	---	
+00111101xxxxx	[alu]	[--]	{P}	---	ax	---	word	---	---	---	rg1	imm	ALU	opa	---	alu	word	opa	---	---	---	
+
+#inc
+#Register/Memory
+1111111011000	[inc]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	---	ALU	inc	---	alu	byte	inc	REG	op2	byte	
+11111110mm000	[inc]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	---	ALU	inc	---	alu	byte	inc	MEM	data	byte	
+1111111111000	[inc]	[11]	{P}	---	op2	---	word	---	---	---	rg1	---	ALU	inc	---	alu	word	inc	REG	op2	word	
+11111111mm000	[inc]	[mm]	{}	---	---	---	---	LDM	data	word	mem	---	ALU	inc	---	alu	word	inc	MEM	data	word	
+#Register
+01000xxxxxxxx	[inc]	[--]	{P}	---	op3	---	word	---	---	---	rg1	---	ALU	inc	---	alu	word	inc	REG	op3	word	
+
+#dec
+#Register/Memory
+1111111011001	[dec]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	---	ALU	dec	---	alu	byte	dec	REG	op2	byte	
+11111110mm001	[dec]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	---	ALU	dec	---	alu	byte	dec	MEM	data	byte	
+1111111111001	[dec]	[11]	{P}	---	op2	---	word	---	---	---	rg1	---	ALU	dec	---	alu	word	dec	REG	op2	word	
+11111111mm001	[dec]	[mm]	{}	---	---	---	---	LDM	data	word	mem	---	ALU	dec	---	alu	word	dec	MEM	data	word	
+#Register
+01001xxxxxxxx	[dec]	[--]	{P}	---	op3	---	word	---	---	---	rg1	---	ALU	dec	---	alu	word	dec	REG	op3	word	
+
+#neg
+1111011011011	[neg]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	---	ALU	neg	---	alu	byte	neg	REG	op2	byte	
+11110110mm011	[neg]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	---	ALU	neg	---	alu	byte	neg	MEM	data	byte	
+1111011111011	[neg]	[11]	{P}	---	op2	---	word	---	---	---	rg1	---	ALU	neg	---	alu	word	neg	REG	op2	word	
+11110111mm011	[neg]	[mm]	{}	---	---	---	---	LDM	data	word	mem	---	ALU	neg	---	alu	word	neg	MEM	data	word	
+
+10011000xxxxx	[cbw]	[--]	{P}	---	al	---	byte	---	---	---	rg1	---	CWD	cbw	---	cwd	---	---	REG	ah	byte	
+10011001xxxxx	[cwd]	[--]	{P}	---	ax	---	word	---	---	---	rg1	---	CWD	cwd	---	cwd	---	---	REG	dx	word
+
+#not	
+1111011011010	[not]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	---	ALU	not	---	alu	---	---	REG	op2	byte	
+11110110mm010	[not]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	---	ALU	not	---	alu	---	---	MEM	data	byte	
+1111011111010	[not]	[11]	{P}	---	op2	---	word	---	---	---	rg1	---	ALU	not	---	alu	---	---	REG	op2	word	
+11110111mm010	[not]	[mm]	{}	---	---	---	---	LDM	data	word	mem	---	ALU	not	---	alu	---	---	MEM	data	word	
+
+#test
+#Register/Memory and Register
+1000010011xxx	[test]	[11]	{P}	---	op1	op2	byte	---	---	---	rg1	rg2	ALU	test	---	alu	byte	and	---	---	---	
+10000100mmxxx	[test]	[mm]	{}	---	op1	---	byte	LDM	data	byte	rg1	mem	ALU	test	---	alu	byte	and	---	---	---	
+1000010111xxx	[test]	[11]	{P}	---	op1	op2	word	---	---	---	rg1	rg2	ALU	test	---	alu	word	and	---	---	---	
+10000101mmxxx	[test]	[mm]	{}	---	op1	---	word	LDM	data	word	rg1	mem	ALU	test	---	alu	word	and	---	---	---	
+#Immediate Data and Register/Memory
+1111011011000	[test]	[11]	{P}	---	op2	---	byte	---	---	---	rg1	imm	ALU	test	---	alu	byte	and	---	---	---	
+11110110mm000	[test]	[mm]	{}	---	---	---	---	LDM	data	byte	mem	imm	ALU	test	---	alu	byte	and	---	---	---	
+1111011111000	[test]	[11]	{P}	---	op2	---	word	---	---	---	rg1	imm	ALU	test	---	alu	word	and	---	---	---	
+11110111mm000	[test]	[mm]	{}	---	---	---	---	LDM	data	word	mem	imm	ALU	test	---	alu	word	and	---	---	---	
+#Immediate Data and Accumulator
+10101000xxxxx	[test]	[--]	{P}	---	al	---	byte	---	---	---	rg1	imm	ALU	test	---	alu	byte	and	---	---	---	
+10101001xxxxx	[test]	[--]	{P}	---	ax	---	word	---	---	---	rg1	imm	ALU	test	---	alu	word	and	---	---	---	
+
+
+
+00110111xxxxx	[aaa]	[--]	{F}	---	ax	---	word	---	---	---	rg1	---	ADJ	aaa	---	adj	---	adj	REG	ax	word
+00100111xxxxx	[daa]	[--]	{F}	---	ax	---	word	---	---	---	rg1	---	ADJ	daa	---	adj	---	adj	REG	ax	word
+00111111xxxxx	[aas]	[--]	{F}	---	ax	---	word	---	---	---	rg1	---	ADJ	aas	---	adj	---	adj	REG	ax	word
+00101111xxxxx	[das]	[--]	{F}	---	ax	---	word	---	---	---	rg1	---	ADJ	das	---	adj	---	adj	REG	ax	word
+11010100xxxxx	[aam]	[--]	{F}	---	---	al	byte	---	---	---	sim	rg2	DIV	aam	ubyte	div	byte	div	REG	ax	word
+11010101xxxxx	[aad]	[--]	{F}	---	---	ax	word	---	---	---	sim	rg2	ADJ	aad	---	adj	---	adj	REG	ax	word
+
+1111011011100	[mul]	[11]	{F}	---	al	op2	byte	---	---	---	rg1	rg2	MUL	mul	ubyte	mul	byte	mul	REG	ax	word
+11110110mm100	[mul]	[mm]	{F}	---	al	---	byte	LDM	data	byte	rg1	mem	MUL	mul	ubyte	mul	byte	mul	REG	ax	word
+1111011011101	[imul]	[11]	{F}	---	al	op2	byte	---	---	---	rg1	rg2	MUL	mul	sbyte	mul	byte	mul	REG	ax	word
+11110110mm101	[imul]	[mm]	{F}	---	al	---	byte	LDM	data	byte	rg1	mem	MUL	mul	sbyte	mul	byte	mul	REG	ax	word
+1111011111100	[mul]	[11]	{N}	---	ax	op2	word	---	---	---	rg1	rg2	MUL	mul	uword	mul	word	mul	REG	ax	word
+					---	---	---	---	---	---	---	---	---	MUL	muh	uword	mul	---	---	REG	dx	word
+11110111mm100	[mul]	[mm]	{N}	---	ax	---	word	LDM	data	word	rg1	mem	MUL	mul	uword	mul	word	mul	REG	ax	word
+					---	---	---	---	---	---	---	---	---	MUL	muh	uword	mul	---	---	REG	dx	word
+1111011111101	[imul]	[11]	{N}	---	ax	op2	word	---	---	---	rg1	rg2	MUL	mul	sword	mul	word	mul	REG	ax	word
+					---	---	---	---	---	---	---	---	---	MUL	muh	sword	mul	---	---	REG	dx	word
+11110111mm101	[imul]	[mm]	{N}	---	ax	---	word	LDM	data	word	rg1	mem	MUL	mul	sword	mul	word	mul	REG	ax	word
+					---	---	---	---	---	---	---	---	---	MUL	muh	sword	mul	---	---	REG	dx	word
+
+1111011011110	[div]	[11]	{N}	---	op2	ax	b1w2	---	---	---	rg1	rg2	DIV	div	ubyte	div	byte	div	REG	ax	word
+
+11110110mm110	[div]	[mm]	{N}	---	---	ax	word	LDM	data	byte	mem	rg2	DIV	div	ubyte	div	byte	div	REG	ax	word
+
+1111011111110	[div]	[11]	{N}	---	op2	ax	word	---	---	---	rg1	rg2	DIV	div	uword	div	word	div	REG	ax	word
+					---	---	---	---	---	---	---	---	---	DIV	rem	uword	div	---	---	REG	dx	word
+
+11110111mm110	[div]	[mm]	{N}	---	---	ax	word	LDM	data	word	mem	rg2	DIV	div	uword	div	word	div	REG	ax	word
+					---	---	---	---	---	---	---	---	---	DIV	rem	uword	div	---	---	REG	dx	word
+
+1111011011111	[idiv]	[11]	{N}	---	op2	ax	b1w2	---	---	---	rg1	rg2	DIV	div	sbyte	div	byte	div	REG	ax	word
+
+11110110mm111	[idiv]	[mm]	{N}	---	---	ax	word	LDM	data	byte	mem	rg2	DIV	div	sbyte	div	byte	div	REG	ax	word
+
+1111011111111	[idiv]	[11]	{N}	---	op2	ax	word	---	---	---	rg1	rg2	DIV	div	sword	div	word	div	REG	ax	word
+					---	---	---	---	---	---	---	---	---	DIV	rem	sword	div	---	---	REG	dx	word
+
+11110111mm111	[idiv]	[mm]	{N}	---	---	ax	word	LDM	data	word	mem	rg2	DIV	div	sword	div	word	div	REG	ax	word
+					---	---	---	---	---	---	---	---	---	DIV	rem	sword	div	---	---	REG	dx	word
+
+1101000011xxx	[shf]	[11]	{F}	---	op2	---	byte	---	---	---	rg1	---	SHF	op1	byteone	shf	byte	shf	REG	op2	byte
+11010000mmxxx	[shf]	[mm]	{F}	---	---	---	---	LDM	data	byte	mem	---	SHF	op1	byteone	shf	byte	shf	MEM	data	byte
+1101000111xxx	[shf]	[11]	{F}	---	op2	---	word	---	---	---	rg1	---	SHF	op1	wordone	shf	word	shf	REG	op2	word
+11010001mmxxx	[shf]	[mm]	{F}	---	---	---	---	LDM	data	word	mem	---	SHF	op1	wordone	shf	word	shf	MEM	data	word
+1101001011xxx	[shf]	[11]	{N}	---	op2	cl	byte	---	---	---	rg1	rg2	SHF	op1	bytecnt	shf	byte	shf	REG	op2	byte
+11010010mmxxx	[shf]	[mm]	{N}	---	---	cl	byte	LDM	data	byte	mem	rg2	SHF	op1	bytecnt	shf	byte	shf	MEM	data	byte
+1101001111xxx	[shf]	[11]	{N}	---	op2	cl	word	---	---	---	rg1	rg2	SHF	op1	wordcnt	shf	word	shf	REG	op2	word
+11010011mmxxx	[shf]	[mm]	{N}	---	---	cl	byte	LDM	data	word	mem	rg2	SHF	op1	wordcnt	shf	word	shf	MEM	data	word
+
+10100100xxxxx	[movsb]	[--]	{N}	STR	---	---	---	LDM	dssi	byte	---	mem	ALU	mov2	---	alu	---	---	MEM	esdi	byte
+					DF0	si	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	si	word
+					DF0	di	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	di	word
+					DF1	si	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	si	word
+					DF1	di	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	di	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10100101xxxxx	[movsw]	[--]	{N}	STR	---	---	---	LDM	dssi	word	---	mem	ALU	mov2	---	alu	---	---	MEM	esdi	word
+					DF0	si	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	si	word
+					DF0	di	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	di	word
+					DF1	si	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	si	word
+					DF1	di	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	di	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10100110xxxxx	[cmpsb]	[--]	{N}	STR	---	---	---	LDM	dssi	byte	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					STR	tmp	---	oth	LDM	esdi	byte	rg1	mem	ALU	cmp	---	alu	byte	cmp	---	---	---
+					DF0	si	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	si	word
+					DF0	di	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	di	word
+					DF1	si	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	si	word
+					DF1	di	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	di	word
+					REPF	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10100111xxxxx	[cmpsw]	[--]	{N}	STR	---	---	---	LDM	dssi	word	---	mem	ALU	mov2	---	alu	---	---	REG	tmp	oth
+					STR	tmp	---	oth	LDM	esdi	word	rg1	mem	ALU	cmp	---	alu	word	cmp	---	---	---
+					DF0	si	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	si	word
+					DF0	di	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	di	word
+					DF1	si	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	si	word
+					DF1	di	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	di	word
+					REPF	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101110xxxxx	[scasb]	[--]	{N}	STR	al	---	byte	LDM	esdi	byte	rg1	mem	ALU	cmp	---	alu	byte	cmp	---	---	---
+					DF0	di	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	di	word
+					DF1	di	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	di	word
+					REPF	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101111xxxxx	[scasw]	[--]	{N}	STR	ax	---	word	LDM	esdi	word	rg1	mem	ALU	cmp	---	alu	word	cmp	---	---	---
+					DF0	di	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	di	word
+					DF1	di	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	di	word
+					REPF	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101100xxxxx	[lodsb]	[--]	{N}	STR	---	---	---	LDM	dssi	byte	---	mem	ALU	mov2	---	alu	---	---	REG	al	byte
+					DF0	si	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	si	word
+					DF1	si	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	si	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101101xxxxx	[lodsw]	[--]	{N}	STR	---	---	---	LDM	dssi	word	---	mem	ALU	mov2	---	alu	---	---	REG	ax	word
+					DF0	si	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	si	word
+					DF1	si	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	si	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101010xxxxx	[stosb]	[--]	{N}	STR	al	---	byte	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	esdi	byte
+					DF0	di	---	word	---	---	---	rg1	---	ALU	inc	---	alu	---	---	REG	di	word
+					DF1	di	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	di	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+10101011xxxxx	[stosw]	[--]	{N}	STR	ax	---	word	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	esdi	word
+					DF0	di	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	di	word
+					DF1	di	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	di	word
+					REP	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					
+
+
+#call
+#Direct within Segment
+11101000xxxxx	[call]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+#Indirect within Segment
+1111111111010	[call]	[11]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	ip	oth
+11111111mm010	[call]	[mm]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+#Direct Intersegment
+10011010xxxxx	[call]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	---	---	---	sim	---	ALU	mov1	---	alu	---	---	REG	cs	seg
+#Indirect Intersegment
+1111111111011	[call]	[11]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+11111111mm011	[call]	[mm]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+
+#jmp
+#Direct within Segment
+11101001xxxxx	[jmp]	[--]	{N}	---	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+#Direct within Segment-Short
+11101011xxxxx	[jmp]	[--]	{N}	---	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+#Indirect within Segment
+1111111111100	[jmp]	[11]	{N}	---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	ip	oth
+11111111mm100	[jmp]	[mm]	{N}	---	---	---	word	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+#Direct Intersegment
+11101010xxxxx	[jmp]	[--]	{N}	---	---	---	---	---	---	---	---	imm	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	---	---	---	sim	---	ALU	mov1	---	alu	---	---	REG	cs	seg
+#Indirect Intersegment
+1111111111101	[jmp]	[11]	{N}	---	---	op2	word	---	---	---	---	rg2	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+11111111mm101	[jmp]	[mm]	{N}	---	---	---	---	LDM	data	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	LDM	data	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+
+#ret
+#Within Segment
+11000011xxxxx	[ret]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+#Within Seg Adding Immed to SP
+11000010xxxxx	[ret]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	sp	---	word	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	sp	word
+#Intersegment
+11001011xxxxx	[ret]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+#Intersegment Adding Immediate to SP
+11001010xxxxx	[ret]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	sp	---	word	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	sp	word
+
+
+
+0111xxxxxxxxx	[jcon]	[--]	{N}	CON	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+11100010xxxxx	[loop]	[--]	{N}	---	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					CXNZ	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+11100001xxxxx	[loop]	[--]	{N}	---	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					CXNZ_Z	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+11100000xxxxx	[loop]	[--]	{N}	---	cx	---	word	---	---	---	rg1	---	ALU	dec	---	alu	---	---	REG	cx	word
+					CXNZ_NZ	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+11100011xxxxx	[jcxz]	[--]	{N}	CXZ	ip	---	oth	---	---	---	rg1	imm	ALU	add	---	alu	---	---	REG	ip	oth
+
+
+
+11001101xxxxx	[int]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	flags	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	clri	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					---	---	---	---	LDM	int	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					---	---	---	---	LDM	int	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+
+11001100xxxxx	[int]	[--]	{N}	---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	flags	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	clri	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					---	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					---	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					---	---	---	---	LDM	int	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					---	---	---	---	LDM	int	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+
+11001110xxxxx	[int]	[--]	{N}	OF	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					OF	flags	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	clri	MEM	stack	word
+					OF	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					OF	cs	---	seg	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					OF	sp	---	word	---	---	---	rg1	two	ALU	sub	---	alu	---	---	REG	sp	word
+					OF	ip	---	oth	---	---	---	rg1	---	ALU	mov1	---	alu	---	---	MEM	stack	word
+					OF	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					OF	---	---	---	LDM	int	lwrd	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					OF	---	---	---	---	---	---	---	imm	ALU	sl2	---	alu	---	---	---	---	---
+					OF	---	---	---	LDM	int	hwrd	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+
+11001111xxxxx	[iret]	[--]	{N}	---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	ip	oth
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	---	REG	cs	seg
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+					---	---	---	---	LDM	stack	word	---	mem	ALU	mov2	---	alu	---	flags	---	---	---
+					---	sp	---	word	---	---	---	rg1	two	ALU	add	---	alu	---	---	REG	sp	word
+
+
+11110101xxxxx	[cmc]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	cmpc	---	---	---
+11111000xxxxx	[clc]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	clrc	---	---	---
+11111010xxxxx	[cli]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	clri	---	---	---
+11111100xxxxx	[cld]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	clrd	---	---	---
+11111001xxxxx	[stc]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	setc	---	---	---
+11111011xxxxx	[sti]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	seti	---	---	---
+11111101xxxxx	[std]	[--]	{N}	---	---	---	---	---	---	---	---	---	---	---	---	---	---	setd	---	---	---
+
+
+
+11110010xxxxx	[repnz]	[--]	{N}	PREP	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11110011xxxxx	[repz]	[--]	{N}	PREP	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+001xx110xxxxx	[seg]	[--]	{N}	PREFIX	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+
+11110100xxxxx	[hlt]	[--]	{N}	HALT	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+10011011xxxxx	[wait]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11011xxx11xxx	[esc]	[11]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11011xxxmmxxx	[esc]	[mm]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11110000xxxxx	[lock]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+0110xxxxxxxxx	[invld]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+1100x00xxxxxx	[invld]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11010110xxxxx	[invld]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+11110001xxxxx	[invld]	[--]	{N}	ERR	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---	---
+
+
